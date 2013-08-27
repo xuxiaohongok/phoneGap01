@@ -1,0 +1,143 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0"/>
+	<title>登录窗口</title> 
+	<link rel="stylesheet" href="jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<script type="text/javascript" charset="utf-8" src="jquery.mobile-1.3.2/js1.9.1.js"></script>
+	<script type="text/javascript" charset="utf-8"src="jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script> 
+	 
+	<script type="text/javascript">  
+	 jQuery(document).ready(function() {
+		 $.mobile.page.prototype.options.domCache = true;
+		 document.addEventListener("deviceready", onDeviceReady, false);
+	 	//提交
+	 	$("#submit").bind("click", function() {
+	 		var u = $("#username").val();
+			var p = $("#password").val();
+			 if (valid(u, p)) {
+				showLoader();
+				/*  $.post('http://192.168.0.122:8081/saleMobile/xmlFileServlet', $("form#loginform").serialize(), function(rest){
+					hideLoader();
+					window.sessionStorage.setItem("login", JSON.stringify(rest));
+					$.mobile.changePage("homePage.html", {transition:"slide", reverse:false,changeHash: true},false); 
+				},'json');  */
+				
+			 	$.ajax({
+					url:'http://192.168.0.122:8081/saleMobile/xmlFileServlet',
+					type: 'post',
+					data:$("form#loginform").serialize(),
+					dataType:'json',
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+						alert('可能网络有问题，请检查或者重试！' + errorThrown + "==" + textStatus);
+						hideLoader();
+					},
+					success: function(result){
+						hideLoader();
+						if(result.errMessage != null) {
+							alert(+ result.errMessage);
+						} else {
+							window.sessionStorage.setItem("login", JSON.stringify(result));
+							$.mobile.changePage("homePage.html", {transition:"slide", reverse:false,changeHash: true},false); 
+						}
+					}
+					}); 
+				
+			 }
+			  });
+		});
+	 
+		function onDeviceReady() {
+	         document.addEventListener("backbutton", eventBackButton, false);
+			var networkState = navigator.network.connection.type;
+	         var states = {};
+	         states[Connection.UNKNOWN]    = 'Unknown connection';
+	         states[Connection.ETHERNET]  = 'Ethernet connection';
+	         states[Connection.WIFI]       = 'WiFi connection';
+	         states[Connection.CELL_2G]    = 'Cell 2G connection';
+	         states[Connection.CELL_3G]    = 'Cell 3G connection';
+	         states[Connection.CELL_4G]    = 'Cell 4G connection';
+	         states[Connection.NONE]       = 'No network connection';
+		}
+		
+		// 返回键
+		 function eventBackButton() {
+		 	if ($.mobile.activePage.is('#loginPage')) {
+		 		navigator.notification.confirm('按确定退出程序!',onConfirm, // callback to invoke with index of button pressed
+			            '确定要退出程序吗?',  // title
+			            '确定,取消'          // buttonLabels
+			        );
+		 	} else navigator.app.backHistory();
+		 	 
+		 }
+		 
+		 function onConfirm(button) {
+		 	 if(button==1) navigator.app.exitApp(); //选择了确定才执行退出
+	   	 }
+			
+		
+		//输入信息验证
+		function valid(u, p){
+			if(u==''|| p==''){
+				alert("用户名不能为空！");
+				return false;			
+			} 
+			
+			return true;
+		};
+		
+		//显示加载器
+		function showLoader() {
+		    //显示加载器.for jQuery Mobile 1.2.0
+		    $.mobile.loading('show', {
+		        text: '登录检测中...', //加载器中显示的文字
+		        textVisible: true, //是否显示文字
+		        theme: 'b',        //加载器主题样式a-e
+		        textonly: false,   //是否只显示文字
+		        html: ""           //要显示的html内容，如图片等
+		    });
+		}
+
+		//隐藏加载器.for jQuery Mobile 1.2.0
+		function hideLoader(){
+		    //隐藏加载器
+		    $.mobile.loading('hide');
+		}
+	</script>
+	</head>
+<body> 
+
+<!-- begin first page -->
+<div id="loginPage" data-role="page">
+  <header data-role="header"  data-theme="b"><h1>销售系统登录窗口</h1></header>
+  <div data-role="content" class="content">
+	    <form method="post" id="loginform">
+	    <ul data-role="listview" data-inset="true">
+	    
+    		<li>
+	    		<div data-role="fieldcontain">
+					<label>账  号:  </label> 
+					<input type="text" name="username" value="" id="username" placeholder="请输入账号" />
+				</div>
+			</li>
+			<li>
+				<div data-role="fieldcontain">
+				<label>密   码:  </label> 
+		     	<input type="password" name="password" id="password" value="" placeholder="请输入密码"/>
+		     	</div>
+	     	</li>
+			</ul>	 
+
+	    	<a data-role="button" data-theme="b" id="submit">登录</a>
+	    	<!-- <a href="changePage.html" data-role="button" data-theme="b" data-transition="slide">登录123</a> -->
+	    </form>
+  </div>
+  
+  <div data-role="footer" data-theme="b" data-position="fixed" data-id="testOK"> <h1>©2013 广州兴图计算机有限公司</h1></div>
+</div>
+
+
+</body>

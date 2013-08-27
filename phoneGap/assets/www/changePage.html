@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<title>登录窗口</title>
+	<link rel="stylesheet" href="jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.css" />
+	<link rel="stylesheet" href="css/style.css"/>
+	<script type="text/javascript" charset="utf-8" src="jquery.mobile-1.3.2/js1.9.1.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/init.js"></script>
+	<script type="text/javascript" charset="utf-8"src="jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+</head>
+<body>
+  <div data-role="page" id="mainPage">
+  <script type="text/javascript">
+	$(function() {
+	    var nextId = 1;
+	    $("#add").click(function() {
+	        nextId++;
+	        var content = "<div data-role='collapsible' id='set" + nextId + "'><h3>Section " + nextId + "</h3><p>I am the collapsible content in a set so this feels like an accordion. I am hidden by default because I have the 'collapsed' state; you need to expand the header to see me.</p></div>";
+	        $("#set").append( content ).trigger('create').collapsibleset('refresh');
+	    });
+	    $("#expand").click(function() {
+	        $("#set").children(":last").trigger( "expand" );
+	    });
+	    $("#collapse").click(function() {
+	        $("#set").children(":last").trigger( "collapse" );
+	    });
+	});
+	</script>
+<header data-role="header"  data-theme="b"><h1>销售系统主页面</h1></header>
+  <div data-role="content" class="content">
+    
+	<button type="button" data-icon="gear" data-theme="b" data-iconpos="right" data-mini="true" data-inline="true" id="add">Add</button>
+<button type="button" data-icon="plus" data-theme="b" data-iconpos="right" data-mini="true" data-inline="true" id="expand">Expand last</button>
+<button type="button" data-icon="minus" data-theme="b" data-iconpos="right" data-mini="true" data-inline="true" id="collapse">Collapse last</button>
+<div data-role="collapsible-set" data-content-theme="d" id="set">
+</div>
+  
+  </div>
+  <div data-role="footer" data-theme="b" data-position="fixed" data-id="testOK"> <h1>©2013 广州兴图计算机有限公司</h1></div>
+</div>
+</body>
+</html>
+

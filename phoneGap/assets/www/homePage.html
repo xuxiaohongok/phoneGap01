@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<title>登录窗口</title>
+	<link rel="stylesheet" href="jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.css" />
+	<link rel="stylesheet" href="css/style.css"/>
+	<script type="text/javascript" charset="utf-8" src="jquery.mobile-1.3.2/js1.9.1.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/init.js"></script>
+	<script type="text/javascript" charset="utf-8"src="jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+	
+</head>
+<body>
+  <div data-role="page" id="homePage" data-dom-cache="false"  data-auto-back-btn="true" data-back-btn-text="返回" data-back-btn-theme="e" >
+  <script type="text/javascript">
+	  $(function() {
+		  	/* $("body").bind("swipeleft",function(){
+			          $.mobile.changePage("index.html");
+			      });  */
+		  	$("body").bind("swiperight",function(){
+			          $.mobile.changePage("index.html", {transition:"slide",reverse:true}, true, true);
+		    });
+
+			var stringFull = "";
+			var details = JSON.parse(window.sessionStorage.getItem("login"));
+			$.each(details, function(key, val){
+				stringFull += "<div data-role='collapsible' data-theme='b' data-content-theme='d'><h3>" + key + "</h3><ul data-role='listview'>";
+				$.each(val, function(i, item) {
+					stringFull +=  "<li>" + item.nodeName + "</li>";
+				})
+				stringFull += "</ul></div>";
+			});
+	        $("#test").append(stringFull);
+		});
+	</script>
+<header data-role="header"  data-theme="b" ><span style="white-space:pre">  </span><a href="index.html" data-icon="home" data-theme="b">返回</a>  
+    <h1>销售系统主页面</h1>
+    <a href="index.html" data-icon="Back">向前</a></header>
+  <div data-role="content" class="content">
+	<div data-role="collapsible-set" data-theme="b" data-content-theme="b" id="test"></div>
+  </div>
+  <div data-role="footer" data-theme="b" data-position="fixed" data-id="testOK"> <h1>©2013 广州兴图计算机有限公司</h1></div>
+</div>
+</body>
+</html>
+
